@@ -444,14 +444,16 @@ SF2File::SF2File(SynthFile *synthfile)
 
 }
 
-std::vector<uint8_t> SF2File::SaveToMem() {
-  std::vector<uint8_t> buf(GetSize());
-  Write(buf.data());
+uint8_t* SF2File::SaveToMem() {
+//  std::vector<uint8_t> buf(GetSize());
+  auto buf = new uint8_t[GetSize()];
+  Write(buf);
   return buf;
 }
 
 bool SF2File::SaveSF2File(const std::wstring &filepath) {
   auto buf = SaveToMem();
-  bool result = pRoot->UI_WriteBufferToFile(filepath, buf.data(), buf.size());
+  bool result = pRoot->UI_WriteBufferToFile(filepath, buf, GetSize());
+  delete[] buf;
   return result;
 }

@@ -4,6 +4,10 @@ add_subdirectory("${PROJECT_SOURCE_DIR}/lib/gsl-lite"
 add_subdirectory("${PROJECT_SOURCE_DIR}/lib/bass"
                  "${CMAKE_CURRENT_BINARY_DIR}/bass" EXCLUDE_FROM_ALL)
 
+add_subdirectory("${PROJECT_SOURCE_DIR}/external/JUCE"
+        "${CMAKE_CURRENT_BINARY_DIR}/JUCE" EXCLUDE_FROM_ALL)
+
+
 if(APPLE)
   # Homebrew installs Qt (up to at least 5.9.1) in /usr/local/qt*, ensure it can
   # be found by CMake since it is not in the default /usr/local prefix.
@@ -66,6 +70,10 @@ add_executable(
   About.h
   IconBar.cpp
   IconBar.h
+  InstrClient.cpp
+  InstrClient.h
+  InstrServerMessage.cpp
+  InstrServerMessage.h
   Logger.cpp
   Logger.h
   MainWindow.cpp
@@ -74,6 +82,8 @@ add_executable(
   ManualCollectionDialog.h
   MenuBar.cpp
   MenuBar.h
+  NewSequencePlayer.cpp
+  NewSequencePlayer.h
   QtVGMRoot.cpp
   QtVGMRoot.h
   SequencePlayer.cpp
@@ -110,7 +120,22 @@ add_executable(
   workarea/qhexview/document/qhexmetadata.cpp
   workarea/qhexview/qhexview.cpp)
 
-target_include_directories(vgmtrans PRIVATE . ./util ./workarea)
+target_include_directories(vgmtrans PRIVATE
+        .
+        ./util
+        ./workarea
+        "${PROJECT_SOURCE_DIR}/external/juicysfplugin/src")
+
+set_target_properties(juce_recommended_config_flags PROPERTIES
+        INTERFACE_COMPILE_DEFINITIONS
+        JUCE_PLUGINHOST_VST3=1)
+
+target_compile_definitions(vgmtrans PRIVATE
+        JUCE_PLUGINHOST_AU=0
+        JUCE_PLUGINHOST_LADSPA=0
+        JUCE_PLUGINHOST_VST3=1
+        JUCE_WEB_BROWSER=0
+        JUCE_USE_CURL=0)
 
 target_link_libraries(
   vgmtrans
@@ -120,7 +145,9 @@ target_link_libraries(
           Qt${Qt_VERSION_MAJOR}::Widgets
           Qt${Qt_VERSION_MAJOR}::Svg
           gsl-lite
-          BASS::MIDI)
+          BASS::MIDI
+          juce::juce_audio_utils
+          juce::juce_audio_processors)
 
 if(CMAKE_SYSTEM_NAME MATCHES "Darwin")
   set(BUNDLE_PATH "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/VGMTrans.app")
