@@ -41,7 +41,6 @@ RawFile::~RawFile(void) {
   }
 
   pRoot->UI_EndRemoveVGMFiles();
-  pRoot->UI_CloseRawFile(this);
 }
 
 // opens a file using the standard c++ file i/o routines

@@ -168,8 +168,9 @@ bool VGMRoot::SetupNewRawFile(RawFile *newRawFile) {
     return true;
   }
   newRawFile->SetProPreRatio(0.5);
+  UI_BeginAddRawFile(newRawFile);
   vRawFile.push_back(newRawFile);
-  UI_AddRawFile(newRawFile);
+  UI_EndAddRawFile(newRawFile);
   return true;
 }
 
@@ -177,6 +178,9 @@ bool VGMRoot::SetupNewRawFile(RawFile *newRawFile) {
 bool VGMRoot::CloseRawFile(RawFile *targFile) {
   if (targFile == NULL)
     return false;
+
+  UI_BeginRemoveRawFile(targFile);
+
   vector<RawFile *>::iterator iter = find(vRawFile.begin(), vRawFile.end(), targFile);
   if (iter != vRawFile.end())
     vRawFile.erase(iter);
@@ -184,8 +188,9 @@ bool VGMRoot::CloseRawFile(RawFile *targFile) {
     pRoot->AddLogItem(new LogItem(std::wstring(L"Error: trying to delete a rawfile which cannot be found in vRawFile."),
                                   LOG_LEVEL_DEBUG,
                                   L"Root"));
-
   delete targFile;
+
+  UI_EndRemoveRawFile(targFile);
   return true;
 }
 
@@ -197,9 +202,12 @@ void VGMRoot::AddVGMFile(VGMFile *theFile) {
   UI_AddVGMFile(theFile);
 }
 
-// Removes a VGMFile from the interface.  The UI_RemoveVGMFile will handle the
+// Removes a VGMFile from the interface.  The UI_BeginRemoveVGMFile will handle the
 // interface-specific stuff
 void VGMRoot::RemoveVGMFile(VGMFile *targFile, bool bRemoveFromRaw) {
+
+  UI_BeginRemoveVGMFile(targFile);
+
   // First we should call the format's onClose handler in case it needs to use
   // the RawFile before we close it (FilenameMatcher, for ex)
   Format *fmt = targFile->GetFormat();
@@ -218,8 +226,7 @@ void VGMRoot::RemoveVGMFile(VGMFile *targFile, bool bRemoveFromRaw) {
   while (targFile->assocColls.size())
     RemoveVGMColl(targFile->assocColls.back());
 
-
-  UI_RemoveVGMFile(targFile);
+  UI_EndRemoveVGMFile(targFile);
   delete targFile;
 }
 

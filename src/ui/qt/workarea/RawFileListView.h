@@ -18,8 +18,10 @@ public:
   QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
 public slots:
-  void AddRawFile();
-  void RemoveRawFile();
+  void beginAddRawFile();
+  void endAddRawFile();
+  void beginRemoveRawFile();
+  void endRemoveRawFile();
 
 private:
   enum Property : uint8_t { Name = 0, ContainedFiles = 1 };

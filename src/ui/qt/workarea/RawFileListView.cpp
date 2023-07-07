@@ -16,8 +16,10 @@
  */
 
 RawFileListViewModel::RawFileListViewModel(QObject *parent) : QAbstractTableModel(parent) {
-  connect(&qtVGMRoot, &QtVGMRoot::UI_AddedRawFile, this, &RawFileListViewModel::AddRawFile);
-  connect(&qtVGMRoot, &QtVGMRoot::UI_RemovedRawFile, this, &RawFileListViewModel::RemoveRawFile);
+  connect(&qtVGMRoot, &QtVGMRoot::UI_BeginAddRawFile, this, &RawFileListViewModel::beginAddRawFile);
+  connect(&qtVGMRoot, &QtVGMRoot::UI_EndAddRawFile, this, &RawFileListViewModel::endAddRawFile);
+  connect(&qtVGMRoot, &QtVGMRoot::UI_BeginRemoveRawFile, this, &RawFileListViewModel::beginRemoveRawFile);
+  connect(&qtVGMRoot, &QtVGMRoot::UI_EndRemoveRawFile, this, &RawFileListViewModel::endRemoveRawFile);
 }
 
 int RawFileListViewModel::rowCount(const QModelIndex &parent) const {
@@ -34,20 +36,26 @@ int RawFileListViewModel::columnCount(const QModelIndex &parent) const {
   return 2;
 }
 
-void RawFileListViewModel::AddRawFile() {
-  int position = static_cast<int>(qtVGMRoot.vRawFile.size()) - 1;
+void RawFileListViewModel::beginAddRawFile() {
+  int position = static_cast<int>(qtVGMRoot.vRawFile.size());
   if (position >= 0) {
     beginInsertRows(QModelIndex(), position, position);
-    endInsertRows();
   }
 }
 
-void RawFileListViewModel::RemoveRawFile() {
-  int position = static_cast<int>(qtVGMRoot.vRawFile.size());
+void RawFileListViewModel::endAddRawFile() {
+  endInsertRows();
+}
+
+void RawFileListViewModel::beginRemoveRawFile() {
+  int position = static_cast<int>(qtVGMRoot.vRawFile.size()) - 1;
   if (position >= 0) {
     beginRemoveRows(QModelIndex(), position, position);
-    endRemoveRows();
   }
+}
+
+void RawFileListViewModel::endRemoveRawFile() {
+  endRemoveRows();
 }
 
 QVariant RawFileListViewModel::headerData(int column, Qt::Orientation orientation, int role) const {

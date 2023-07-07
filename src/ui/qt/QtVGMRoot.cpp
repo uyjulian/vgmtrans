@@ -23,14 +23,6 @@ void QtVGMRoot::UI_PreExit() {
 void QtVGMRoot::UI_Exit() {
 }
 
-void QtVGMRoot::UI_AddRawFile(RawFile*) {
-  this->UI_AddedRawFile();
-}
-
-void QtVGMRoot::UI_CloseRawFile(RawFile*) {
-  this->UI_RemovedRawFile();
-}
-
 void QtVGMRoot::UI_OnBeginScan() {
 }
 

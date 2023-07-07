@@ -18,8 +18,6 @@ public:
   void UI_SetRootPtr(VGMRoot** theRoot) override;
   void UI_PreExit() override;
   void UI_Exit() override;
-  void UI_AddRawFile(RawFile* newFile) override;
-  void UI_CloseRawFile(RawFile* targFile) override;
 
   void UI_OnBeginScan() override;
   void UI_SetScanInfo() override;
@@ -42,12 +40,14 @@ public:
   std::wstring UI_GetSaveDirPath(const std::wstring& suggestedDir = L"") override;
 
 signals:
-  void UI_AddedRawFile();
-  void UI_RemovedRawFile();
+  void UI_BeginAddRawFile(RawFile* newFile) override;
+  void UI_EndAddRawFile(RawFile* newFile) override;
+  void UI_BeginRemoveRawFile(RawFile* targFile) override;
+  void UI_EndRemoveRawFile(RawFile* targFile) override;
   void UI_AddedVGMFile();
   void UI_AddedVGMColl();
   void UI_RemovedVGMColl();
-  void UI_RemoveVGMFile(VGMFile* targFile) override;
+  void UI_BeginRemoveVGMFile(VGMFile* targFile) override;
   void UI_AddLogItem(LogItem* theLog) override;
 };
 

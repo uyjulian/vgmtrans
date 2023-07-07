@@ -126,7 +126,7 @@ VGMFileListView::VGMFileListView(QWidget *parent) : QTableView(parent) {
   header_hor->setHighlightSections(true);
   header_hor->setSectionResizeMode(QHeaderView::Stretch);
 
-  connect(&qtVGMRoot, &QtVGMRoot::UI_RemoveVGMFile, this, &VGMFileListView::removeVGMFile);
+  connect(&qtVGMRoot, &QtVGMRoot::UI_BeginRemoveVGMFile, this, &VGMFileListView::removeVGMFile);
   connect(this, &QAbstractItemView::customContextMenuRequested, this, &VGMFileListView::itemMenu);
   connect(this, &QAbstractItemView::doubleClicked, this, &VGMFileListView::requestVGMFileView);
 }

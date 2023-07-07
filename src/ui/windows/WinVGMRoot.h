@@ -22,8 +22,8 @@ public:
   virtual void UI_SetRootPtr(VGMRoot** theRoot);
   virtual void UI_PreExit();
   virtual void UI_Exit();
-  virtual void UI_AddRawFile(RawFile* newFile);
-  virtual void UI_CloseRawFile(RawFile* targFile);
+  virtual void UI_BeginAddRawFile(RawFile* newFile);
+  virtual void UI_BeginRemoveRawFile(RawFile* targFile);
 
   virtual void UI_OnBeginScan();
   virtual void UI_SetScanInfo();
@@ -35,7 +35,7 @@ public:
   virtual void UI_AddVGMMisc(VGMMiscFile* theMiscFile);
   virtual void UI_AddVGMColl(VGMColl* theColl);
   virtual void UI_AddLogItem(LogItem* theLog);
-  virtual void UI_RemoveVGMFile(VGMFile* targFile);
+  virtual void UI_BeginRemoveVGMFile(VGMFile* targFile);
   virtual void UI_RemoveVGMColl(VGMColl* targColl);
   virtual void UI_BeginRemoveVGMFiles();
   virtual void UI_EndRemoveVGMFiles();

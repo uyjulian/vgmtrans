@@ -117,12 +117,12 @@ void WinVGMRoot::UI_Exit()
 									//interface after the interface has closed down.  we must do that before
 }
 
-void WinVGMRoot::UI_AddRawFile(RawFile* newFile)
+void WinVGMRoot::UI_BeginAddRawFile(RawFile* newFile)
 {
 	rawFileListView.AddFile(newFile);
 }
 
-void WinVGMRoot::UI_CloseRawFile(RawFile* targFile)
+void WinVGMRoot::UI_BeginRemoveRawFile(RawFile* targFile)
 {
 	rawFileListView.RemoveFile(targFile);
 }
@@ -179,7 +179,7 @@ void WinVGMRoot::UI_AddLogItem(LogItem* theLog)
 	theLogListView.AddLogItem(theLog);
 }
 
-void WinVGMRoot::UI_RemoveVGMFile(VGMFile* targFile)
+void WinVGMRoot::UI_BeginRemoveVGMFile(VGMFile* targFile)
 {
 	pMainFrame->OnRemoveVGMFile(targFile);
 	theVGMFileListView.RemoveFile(targFile);
