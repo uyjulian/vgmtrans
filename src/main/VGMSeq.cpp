@@ -43,6 +43,7 @@ VGMSeq::VGMSeq(const string &format, RawFile *file, uint32_t offset, uint32_t le
 VGMSeq::~VGMSeq(void) {
   DeleteVect<SeqTrack>(aTracks);
   DeleteVect<ISeqSlider>(aSliders);
+  delete midi;
 }
 
 bool VGMSeq::Load() {
