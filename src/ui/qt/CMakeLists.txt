@@ -70,10 +70,6 @@ add_executable(
   About.h
   IconBar.cpp
   IconBar.h
-  InstrClient.cpp
-  InstrClient.h
-  InstrServerMessage.cpp
-  InstrServerMessage.h
   Logger.cpp
   Logger.h
   MainWindow.cpp
@@ -82,8 +78,6 @@ add_executable(
   ManualCollectionDialog.h
   MenuBar.cpp
   MenuBar.h
-  NewSequencePlayer.cpp
-  NewSequencePlayer.h
   QtVGMRoot.cpp
   QtVGMRoot.h
   SequencePlayer.cpp
@@ -118,7 +112,15 @@ add_executable(
   workarea/qhexview/document/qhexcursor.cpp
   workarea/qhexview/document/qhexdocument.cpp
   workarea/qhexview/document/qhexmetadata.cpp
-  workarea/qhexview/qhexview.cpp)
+  workarea/qhexview/qhexview.cpp
+  playback/InstrClient.cpp
+  playback/InstrClient.h
+  playback/InstrServerMessage.cpp
+  playback/InstrServerMessage.h
+  playback/NewSequencePlayer.cpp
+  playback/NewSequencePlayer.h
+  playback/PendingCalls.cpp
+  playback/PendingCalls.h)
 
 target_include_directories(vgmtrans PRIVATE
         .
