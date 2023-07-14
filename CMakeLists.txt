@@ -28,7 +28,6 @@ set(CMAKE_MODULE_PATH
 file(GLOB_RECURSE MAIN_FILES "${PROJECT_SOURCE_DIR}/src/main/*.cpp" "${PROJECT_SOURCE_DIR}/src/main/*.h")
 file(GLOB UI_FILES "${PROJECT_SOURCE_DIR}/src/ui/qt/*.cpp" "${PROJECT_SOURCE_DIR}/src/ui/qt/*.h")
 file(GLOB_RECURSE LIB_FILES
-        "${PROJECT_SOURCE_DIR}/lib/fluidsynth/mem_sfloader/*.c" "${PROJECT_SOURCE_DIR}/lib/fluidsynth/mem_sfloader/*.h"
         "${PROJECT_SOURCE_DIR}/lib/tinyxml/*.cpp" "${PROJECT_SOURCE_DIR}/lib/fluidsynth/*.h"
         "${PROJECT_SOURCE_DIR}/lib/minizip/*.c" "${PROJECT_SOURCE_DIR}/lib/minizip/*.h"
         )
@@ -90,15 +89,13 @@ if (ZLIB_FOUND)
 endif (ZLIB_FOUND)
 
 find_package (FluidSynth REQUIRED)
+include_directories(${FLUIDSYNTH_INCLUDE_DIR})
 target_link_libraries(vgmtrans ${FLUIDSYNTH_LIBRARIES})
 
 find_package(GLIB REQUIRED)
 target_link_libraries(vgmtrans ${GLIB_LIBRARIES})
 
 if (WIN32 OR APPLE)
-    find_library(QTPCRE_LIBRARY qtpcre)
-    target_link_libraries(vgmtrans ${QTPCRE_LIBRARY})
-
     find_library(INTL_LIBRARY NAMES intl)
     target_link_libraries(vgmtrans ${INTL_LIBRARY})
 
@@ -133,13 +130,9 @@ if (APPLE)
     find_library(COREFOUNDATION_LIBRARY CoreFoundation)
     find_library(CORESERVICES_LIBRARY CoreServices)
 
-    find_library(QCOCOA_LIBRARY qcocoa)
-    find_library(QT5PLATFORMSUPPORT_LIBRARY Qt5PlatformSupport)
-    find_library(QT5PRINTSUPPORT_LIBRARY Qt5PrintSupport)
     find_library(CUPS_LIBRARY cups)
 
     target_link_libraries(vgmtrans
-            ${QCOCOA_LIBRARY}
             ${APPKIT_LIBRARY}
             ${CARBON_LIBRARY}
             ${COREMIDI_LIBRARY}
@@ -148,8 +141,6 @@ if (APPLE)
             ${COREFOUNDATION_LIBRARY}
             ${CORESERVICES_LIBRARY}
 
-            ${QT5PLATFORMSUPPORT_LIBRARY}
-            ${QT5PRINTSUPPORT_LIBRARY}
             ${CUPS_LIBRARY}
             ${IOKIT_LIBRARY}
 

@@ -6,9 +6,18 @@
 #include "MusicPlayer.h"
 
 extern "C" {
-#include "mem_sfloader.h"
 #include "vgmtrans_fluid_midi.h"
 }
+
+#define FLUID_REVERB_DEFAULT_ROOMSIZE 0.2f
+#define FLUID_REVERB_DEFAULT_DAMP 0.0f
+#define FLUID_REVERB_DEFAULT_WIDTH 0.5f
+#define FLUID_REVERB_DEFAULT_LEVEL 0.9f
+
+#define FLUID_CHORUS_DEFAULT_N 3
+#define FLUID_CHORUS_DEFAULT_LEVEL 2.0f
+#define FLUID_CHORUS_DEFAULT_SPEED 0.3f
+#define FLUID_CHORUS_DEFAULT_DEPTH 8.0f
 
 int midi_event_callback(void* data, fluid_midi_event_t* event);
 
@@ -31,7 +40,7 @@ MusicPlayer::MusicPlayer()
 
 
     // allocate and add our custom memory sfont loader
-    loader = new_memsfloader(settings);
+    loader = NULL;
 
     if (loader == NULL) {
         FLUID_LOG(FLUID_WARN, "Failed to create the default SoundFont loader");
@@ -71,12 +80,15 @@ void MusicPlayer::LoadSF2(const void *data)
 int midi_event_callback(void* data, fluid_midi_event_t* event)
 {
 
+#if 0
 	int track_num = (vgmtrans_fluid_midi_event_get_track((vgmtrans_fluid_midi_event_t*)event))->num;
     int chan = fluid_midi_event_get_channel(event);
     int new_chan = ((track_num / 15) * 16) + chan;
     fluid_midi_event_set_channel(event, new_chan);
 
 	return fluid_synth_handle_midi_event(data, event);
+#endif
+    return 0;
 }
 
 void MusicPlayer::StopMidi() {
@@ -92,6 +104,7 @@ void MusicPlayer::StopMidi() {
 
 void MusicPlayer::PlayMidi(const void* data, size_t len)
 {
+#if 0
     this->player = new_fluid_player(this->synth);
     this->adriver = new_fluid_audio_driver(this->settings, this->synth);
 
@@ -99,4 +112,5 @@ void MusicPlayer::PlayMidi(const void* data, size_t len)
 		fluid_player_set_playback_callback(this->player, &midi_event_callback, this->synth);
         vgmtrans_fluid_player_play(this->player);
 	}
+#endif
 }

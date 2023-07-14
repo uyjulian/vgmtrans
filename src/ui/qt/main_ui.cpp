@@ -10,7 +10,9 @@ Q_IMPORT_PLUGIN(QWindowsIntegrationPlugin)
 #endif
 
 #ifdef Q_OS_MAC
+#if 0
 Q_IMPORT_PLUGIN(QCocoaIntegrationPlugin)
+#endif
 #endif
 
 
